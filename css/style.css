@@ -1,0 +1,30 @@
+html * {
+    color: var(--native-color);
+}
+
+body {
+    margin: 0;
+    background-color: var(--footer-background-color);
+}
+
+:root {
+    --native-color: black;
+    --nav-item-color: white;
+    --nav-item-active-color: var(--header-background-color);
+    --nav-item-active-background-color: white;
+    --nav-item-hover-color: var(--header-background-color);
+    --nav-item-hover-background-color: white;
+    --footer-color: white;
+    --ubuntu-font-family: Ubuntu, sans-serif;
+    --open-font-family: 'Open Sans', sans-serif;
+    --background-green: #0090b0;
+    --header-background-color: #021418;
+    --gradient-background-color: #015568;
+    --footer-background-color: #05303a;
+    --button-hover-color: #129da2;
+    --exo-2-font-family: 'Exo 2', sans-serif;
+    --checkbox-accent-color: var(--background-green);
+    --link-hover-color: red;
+    --link-active-color: red;
+    --form-color: gray;
+}

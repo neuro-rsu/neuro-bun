@@ -228,38 +228,37 @@ class CrazyBun extends LitElement {
             pointsText.attr({ fill: 'yellow', "font-size": "40px" });
             bestPointsText.attr({ fill: 'yellow', "font-size": "40px" });
 
-            raccoon.transform('t100,136');
-            lights.attr({ visibility: "hidden" });
-            truck.transform('t60');
-            cactus.transform('t-1200');
-			fish.transform('t-600');
+            // raccoon.transform('t100,136');
+            // lights.attr({ visibility: "hidden" });
+            // truck.transform('t60');
+            // cactus.transform('t-1200');
+			// fish.transform('t-600');
             //madFish.transform('t-600,150');
-            truck.hover(hoverOverTruck, hoverOutTruck);
-            truck.mousedown(mouseDownTruck);
+            // truck.hover(hoverOverTruck, hoverOutTruck);
+            // truck.mousedown(mouseDownTruck);
             sun.hover(hoverOverSun, hoverOutSun);
             sun.mousedown(mouseDownSun);
-            moon.hover(hoverOverMoon, hoverOutMoon);
-            moon.mousedown(mouseDownMoon);
+
             animateAll();
 
             let gameTime = 0;
-            let intervalID = setInterval(() => {
-                gameTime += 1;
-                timeText.attr({ text: Math.round(gameTime), fill: 'yellow', "font-size": "40px" });
-                fishBox = fish.getBBox();
-                raccoonBox = raccoon.getBBox();
-                if (raccoon.inAnim().length !== 0) {
-                    let intersect = Snap.path.isBBoxIntersect(raccoonBox, fishBox);
-                    if ( intersect && !isFish){
-                        isFish = true;
-                        caughtFish++;
-                        pointsText.attr( { text: `${caughtFish}:${missedFish}` });
-                    }
-                }
-            }, 100)
+            // let intervalID = setInterval(() => {
+            //     gameTime += 1;
+            //     timeText.attr({ text: Math.round(gameTime), fill: 'yellow', "font-size": "40px" });
+            //     fishBox = fish.getBBox();
+            //     raccoonBox = raccoon.getBBox();
+            //     if (raccoon.inAnim().length !== 0) {
+            //         let intersect = Snap.path.isBBoxIntersect(raccoonBox, fishBox);
+            //         if ( intersect && !isFish){
+            //             isFish = true;
+            //             caughtFish++;
+            //             pointsText.attr( { text: `${caughtFish}:${missedFish}` });
+            //         }
+            //     }
+            // }, 100)
 
 
-            document.addEventListener('keydown', mouseDownTruck);
+            // document.addEventListener('keydown', mouseDownTruck);
         }
         function animateAll() {
             animatetTruck1();

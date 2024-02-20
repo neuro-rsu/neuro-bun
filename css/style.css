@@ -4,8 +4,19 @@ html * {
 
 body {
     margin: 0;
-    background-color: var(--footer-background-color);
+    /* height: 100vh;
+    background: url(/images/png/forest.jpg) repeat-x 0 100% fixed;
+    animation: forest 30s linear infinite;
+    -webkit-animation: forest 30s linear infinite; */
 }
+/* @keyframes forest {
+        from { background-position: -1000px 100%, 0 0;}
+        to { background-position: 0 100%; }
+    }
+    @-webkit-keyframes forest {
+        from { background-position: -1000px 100%, 0 0;}
+        to { background-position: 0 100%, 0 0; }
+    } */
 
 :root {
     --native-color: black;

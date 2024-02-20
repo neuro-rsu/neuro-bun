@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Smart Crazy Bun">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crazy Bun</title>
+    <link rel="icon" type="images/png" href="images/favicon.svg" />
+    <link rel="preload" href="css/style.css" as="style" />
+    <link rel="modulepreload" href="js/neuro-bun.mjs" />
+    <link rel="modulepreload" href="js/base-element.mjs" />
+    <link rel="modulepreload" href="js/settings.mjs" />
+    <link rel="modulepreload" href="js/bun-brain.mjs" />
+    <link rel="modulepreload" href="js/lit-core.min.js" />
+    <link rel="modulepreload" href="js/snap.svg-min.js" />
+    <link rel="modulepreload" href="js/icaro.js" />
+    <link rel="modulepreload" href="js/utils.js" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script type="module" src="js/lit-core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pouchdb@latest/dist/pouchdb.min.js"></script>
+    <script src="js/snap.svg-min.js"></script>
+    <script type="module" src="js/neuro-bun.mjs"></script>
+</head>
+
+<body>
+    <input id="btn" type="button" value="start" />
+    <canvas id="root" width="100%" style="border:1px solid grey">
+    <script>
+        const
+  canvas = document.getElementById('root'),
+  btn = document.getElementById('btn'),
+  ctx = canvas.getContext('2d'),
+  brickImage = new Image(),
+  piece = {image: brickImage, x:0, y:0, width:700};
+
+  brickImage.src = "http://localhost:52330/images/png/forest.jpg";
+
+// When btn is clicked execute start()
+btn.addEventListener('click', start)
+
+function start(){
+    btn.value = 'animation started'
+
+    // Start gameLoop()
+    brickImage.onload = window.requestAnimationFrame(gameLoop)
+}
+
+function gameLoop(){
+  // Clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+  // Draw at coordinates x and y
+  ctx.drawImage(piece.image, piece.x, piece.y)
+
+  let pieceLeftSidePos = piece.x;
+  let middlePos = canvas.width/2 - piece.width/2;
+
+  // Brick stops when it gets to the middle of the canvas
+  if(pieceLeftSidePos > middlePos) piece.x -= 2;
+
+  window.requestAnimationFrame(gameLoop)   // Needed to keep looping
+}
+    </script>
+
+</body>
+
+</html>

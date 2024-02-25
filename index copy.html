@@ -22,29 +22,42 @@
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@latest/dist/pouchdb.min.js"></script>
     <script src="js/snap.svg-min.js"></script>
     <script type="module" src="js/neuro-bun.mjs"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 
 <body>
-    <input id="btn" type="button" value="start" />
-    <canvas id="root" width="100%" style="border:1px solid grey">
+    <!-- <input id="btn" type="button" value="start" /> -->
+    <canvas id="root"  width="2000" height="900" style="border:1px solid grey; display: block; height: 100vh;"></canvas>
     <script>
         const
-  canvas = document.getElementById('root'),
+  const canvas = document.getElementById('root'),
   btn = document.getElementById('btn'),
   ctx = canvas.getContext('2d'),
   brickImage = new Image(),
-  piece = {image: brickImage, x:0, y:0, width:700};
+  piece = {image: brickImage, x:0, y:0, width:100};
+  brickImage.width = 100;
+  brickImage.height = 100;
 
-  brickImage.src = "http://localhost:52330/images/png/forest.jpg";
-
+  const foxImage = new Image();
+  foxPiece = {image: foxImage, x:0, y:0, width:100};
+  foxImage.src = "images/png/fox.png";
+  brickImage.src = "images/png/forest.avif";
+//   document.querySelector("body").append(brickImage)
+//   brickImage.src = "/images/png/forest.jpg";
+start()
 // When btn is clicked execute start()
-btn.addEventListener('click', start)
+// btn.addEventListener('click', start)
 
 function start(){
-    btn.value = 'animation started'
+    // btn.value = 'animation started'
 
     // Start gameLoop()
     brickImage.onload = window.requestAnimationFrame(gameLoop)
+
 }
 
 function gameLoop(){
@@ -52,13 +65,30 @@ function gameLoop(){
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 
   // Draw at coordinates x and y
-  ctx.drawImage(piece.image, piece.x, piece.y)
+  ctx.drawImage(piece.image, piece.x, piece.y, 2556, 900)
+  ctx.drawImage(foxPiece.image, foxPiece.x, foxPiece.y, 188.8, 302.08)
 
   let pieceLeftSidePos = piece.x;
   let middlePos = canvas.width/2 - piece.width/2;
 
   // Brick stops when it gets to the middle of the canvas
-  if(pieceLeftSidePos > middlePos) piece.x -= 2;
+  if(pieceLeftSidePos > -1278) {
+    piece.x -= 2;
+
+}
+
+  else {
+    piece.x = 0;
+
+  }
+
+  if(foxPiece.x > 0) {
+    foxPiece.x -= 10;
+}
+  else {
+    foxPiece.x = 1278;
+
+  }
 
   window.requestAnimationFrame(gameLoop)   // Needed to keep looping
 }

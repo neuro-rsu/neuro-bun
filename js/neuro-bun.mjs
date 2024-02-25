@@ -167,10 +167,10 @@ class NeuroBun extends BaseElement {
             const wolfImage = wolf.node;
             const hareImage = hare.node;
             const piece = {image: forestImage, x:0, y:0};
-            const foxPiece = {image: foxImage, x:1920, y:600};
-            const bearPiece = {image: bearImage, x:1920, y:600};
-            const wolfPiece = {image: wolfImage, x:1920, y:600};
-            const harePiece = {image: hareImage, x:1920, y:600};
+            const foxPiece = {image: foxImage, x:1920, y:500};
+            const bearPiece = {image: bearImage, x:1920, y:500};
+            const wolfPiece = {image: wolfImage, x:1920, y:500};
+            const harePiece = {image: hareImage, x:1920, y:500};
             function randomInteger(min, max) {
                 let rand = min + Math.random() * (max + 1 - min);
                 return Math.floor(rand);
@@ -209,7 +209,7 @@ class NeuroBun extends BaseElement {
                     piece.x = 0;
                 }
 
-                ctx.drawImage(currentPiece.image, currentPiece.x, currentPiece.y, 150, 300)
+                ctx.drawImage(currentPiece.image, currentPiece.x, currentPiece.y, 200, 400)
 
                 if (currentPiece.x > -200) {
                     currentPiece.x -= 15;
@@ -232,7 +232,7 @@ class NeuroBun extends BaseElement {
 
             costText = s.text(50, 80, '0');
             populationText = s.text(960, 80, `0:${settings.populationCount}`);
-            bestCostText = s.text(1930, 80, '0');
+            bestCostText = s.text(1880, 80, '0');
             populationText.attr({ fill: 'yellow', "font-size": "40px" });
             costText.attr({ fill: 'yellow', "font-size": "40px" });
             bestCostText.attr({ fill: 'yellow', "font-size": "40px" });

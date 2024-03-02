@@ -11,17 +11,17 @@ export async function createBestBunBrain() {
     bestBunBrain = new NeuralNetwork(settings.topology);
     bestBunBrain.cost = -Infinity;
 
-    await pdb.get(settings.topology.join('-')).then(function (bestBunBrainDB) {
-        bestBunBrain.sections.forEach((item, index) => item.weights = bestBunBrainDB.sections[index].weights);
-        bestBunBrain.cost = bestBunBrainDB.cost;
-        // console.log(bestBunBrainDB);
-    }).catch(function (err) {
-        // console.log(err);
-        bestBunBrain._id = settings.topology.join('-');
-        return pdb.put(bestBunBrain);
-    }).catch( err => {
-        console.log(`Can't add bestBunBrain ${err}`);
-    });
+    // await pdb.get(settings.topology.join('-')).then(function (bestBunBrainDB) {
+    //     bestBunBrain.sections.forEach((item, index) => item.weights = bestBunBrainDB.sections[index].weights);
+    //     bestBunBrain.cost = bestBunBrainDB.cost;
+    //     // console.log(bestBunBrainDB);
+    // }).catch(function (err) {
+    //     // console.log(err);
+    //     bestBunBrain._id = settings.topology.join('-');
+    //     return pdb.put(bestBunBrain);
+    // }).catch( err => {
+    //     console.log(`Can't add bestBunBrain ${err}`);
+    // });
 }
 
 export async function clearBestBunBrain() {
@@ -60,7 +60,7 @@ export async function changeBestBunBrain(bunBrain) {
     if (bunBrain.cost > bestBunBrain.cost) {
         bestBunBrain = bunBrain.clone(bunBrain);
         bestBunBrain.cost = bunBrain.cost;
-        await saveBestBunBrain();
+        // await saveBestBunBrain();
     }
 }
 

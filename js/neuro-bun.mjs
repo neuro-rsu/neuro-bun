@@ -120,7 +120,7 @@ class NeuroBun extends BaseElement {
         // const night = s.rect(-4, -600, vbW + 10, 600);
         // const moon = s.circle(980, 800, 60);
         // moon.attr({ fill: "white" });
-        let forest, bun, fox, bear, wolf, hare;
+        let forest, bun, fox, bear, wolf, hare, grandma;
         let costText;
         let populationText;
         let bestCostText;
@@ -135,6 +135,7 @@ class NeuroBun extends BaseElement {
         Snap.load("images/crazy-bun4.svg", onSVGLoaded.bind(this));
         let countDeadBun = 0;
         let bestBrain = null;
+        let isJump = false;
 
 
 
@@ -147,6 +148,7 @@ class NeuroBun extends BaseElement {
             populationText.attr( { text: `${currentPopulation}:${settings.populationCount - countDeadBun}` });
             bun.attr({ visibility: "hidden" });
         }
+
         function onSVGLoaded(data) {
             // mountains = data.select("#mGroup");
             // mountainRange = data.select("#mrGroup");
@@ -154,6 +156,7 @@ class NeuroBun extends BaseElement {
             fox = data.select("#foxGroup");
             bear = data.select("#bearGroup");
             wolf = data.select("#wolfGroup");
+            grandma = data.select("#grandmaGroup");
             hare = data.select("#hareGroup");
             forest = data.select("#forestGroup");
 
@@ -165,20 +168,22 @@ class NeuroBun extends BaseElement {
             const foxImage = fox.node;
             const bearImage = bear.node;
             const wolfImage = wolf.node;
+            const grandmaImage = grandma.node;
             const hareImage = hare.node;
-            const piece = {image: forestImage, x:0, y:0};
-            const foxPiece = {image: foxImage, x:1920, y:500};
-            const bearPiece = {image: bearImage, x:1920, y:500};
-            const wolfPiece = {image: wolfImage, x:1920, y:500};
-            const harePiece = {image: hareImage, x:1920, y:500};
+            const piece = {image: forestImage, x:0, y:0, h: 400, w: 200};
+            const foxPiece = {image: foxImage, x:1920, y:500, h: 400, w: 200};
+            const bearPiece = {image: bearImage, x:1920, y:500, h: 400, w: 200};
+            const wolfPiece = {image: wolfImage, x:1920, y:500, h: 400, w: 200};
+            const grandmaPiece = {image: grandmaImage, x:1920, y:500, h: 400, w: 200};
+            const harePiece = {image: hareImage, x:1920, y:500, h: 400, w: 200};
             function randomInteger(min, max) {
                 let rand = min + Math.random() * (max + 1 - min);
                 return Math.floor(rand);
             }
             let currentPiece;
             function selectAnimal() {
-                switch(randomInteger(0,3)) {
-                    case 0:  // if (x === 'value1')
+                switch(randomInteger(0,4)) {
+                    case 0:
                         currentPiece = harePiece
                         break;
                     case 1:
@@ -189,6 +194,9 @@ class NeuroBun extends BaseElement {
                         break;
                     case 3:
                         currentPiece = foxPiece
+                        break;
+                    case 4:
+                        currentPiece = grandmaPiece
                         break;
                 }
             }
@@ -212,9 +220,10 @@ class NeuroBun extends BaseElement {
                 ctx.drawImage(currentPiece.image, currentPiece.x, currentPiece.y, 200, 400)
 
                 if (currentPiece.x > -200) {
-                    currentPiece.x -= 15;
+                    currentPiece.x -= 20;
                 } else {
                     currentPiece.x = 1920;
+                    newPopulation()
                     selectAnimal()
                 }
 
@@ -232,7 +241,7 @@ class NeuroBun extends BaseElement {
 
             costText = s.text(50, 80, '0');
             populationText = s.text(960, 80, `0:${settings.populationCount}`);
-            bestCostText = s.text(1880, 80, '0');
+            bestCostText = s.text(1840, 80, '0');
             populationText.attr({ fill: 'yellow', "font-size": "40px" });
             costText.attr({ fill: 'yellow', "font-size": "40px" });
             bestCostText.attr({ fill: 'yellow', "font-size": "40px" });
@@ -240,15 +249,15 @@ class NeuroBun extends BaseElement {
             // s.append(mountains);
             // s.append(mountainRange);
             // s.append(fox);
-            s.append(bun);
-            // for (let index = 0; index < buns.length; index++) {
-            //     buns[index] = bun.clone();
-            //     buns[index].brain = bestBunBrain.clone();
-            //     buns[index].brain.cost = 0;
-            //     buns[index].energy = 100;
-            //     s.append( buns[index] );
-            //     buns[index].transform('t100,136');
-            // }
+            // s.append(bun);
+            for (let index = 0; index < buns.length; index++) {
+                buns[index] = bun.clone();
+                buns[index].brain = bestBunBrain.clone();
+                buns[index].brain.cost = 0;
+                buns[index].energy = 100;
+                s.append( buns[index] );
+                buns[index].transform('t144,750');
+            }
 
 
             //let t = new Snap.Matrix();
@@ -258,7 +267,7 @@ class NeuroBun extends BaseElement {
             //cactus.transform(t);
             // forest.transform('t-1278');
             fox.transform('t400,160');
-            bun.transform('t144,750');
+            // bun.transform('t144,750');
 			// fish.transform('t-600,100');
 
 
@@ -269,46 +278,74 @@ class NeuroBun extends BaseElement {
             animateAll();
             //text2.attr({ fill: 'yellow', "font-size": "40px" })
 
-            let _value = 0;
-            // let _int = setInterval(() => {
-            //     value += 1;
-            //     costText.attr({ text: Math.round(value), fill: 'yellow', "font-size": "40px" });
-            //     fishBox = kindFish ? fish.getBBox() : madFish.getBBox();
-            //     if (clouds.attr("fill") === "red") {
-            //         clouds.attr({ fill: "white" });
-            //     };
-            //     buns.forEach( bun => {
-            //         if (bun.inAnim().length === 0 && bun.energy <= 0 || bun.hasFish)
-            //             return;
-            //         bunBox = bun.getBBox();
-            //         if (bun.inAnim().length !== 0) {
-            //             let intersect = Snap.path.isBBoxIntersect(bunBox, fishBox);
-            //             if ( intersect ){
-            //                 bun.energy += kindFish ? 50 : -100;
-            //                 if (bun.energy <= 0)
-            //                     dead(bun);
-            //                 bun.hasFish = true;
-            //                 //text.attr({ text: '0', fill: 'yellow',  "font-size": "80px" });
-            //                 if ( clouds.attr("fill") !== "red" ){
-            //                     clouds.attr({ fill: "red" });
-            //                 }
-            //             }
-
-            //         } else {
-            //             const distance = bunBox.x - fishBox.x2;
-            //             if ( distance >= 0 ){
-            //                 const inputs = [[ map( distance, 0, 1200, 0, 1), kindFish ]];
-            //                 const result =  bun.brain.feedForward(inputs[0]);
-            //                 if ( result[1] > result[0] ){
-            //                     bunJump(bun);
-            //                     bun.energy -= 10;
-            //                 }
-            //             }
-            //         }
-            //     });
-
-            // }, 100)
-            document.addEventListener('keydown', mouseDownBun);
+            function intersection(a, b) {{
+                const left = Math.max(a.x, b.x);
+                const top = Math.max(a.y, b.y);
+                const right = Math.min(a.x + a.w, b.x + b.w);
+                const bottom = Math.min(a.y + a.h, b.y+ b.h);
+                const width = right - left;
+                const height = bottom - top;
+                if (width < 0 || height < 0)
+                    return false;
+                return true;
+}
+            }
+            async function newPopulation() {
+                if ( countDeadBun === settings.populationCount ){
+                    currentPopulation++;
+                    value = 0;
+                    costText.attr( {text: '0'} );
+                    if ( bestBrain?.cost > bestBunBrain.cost ){
+                        bestCostText.attr({text: bestBrain?.cost});
+                    }
+                    populationText.attr( { text: `${currentPopulation}:${settings.populationCount}`});
+                    await changeBestBunBrain( bestBrain );
+                    buns.forEach( bun => {
+                        bun.brain = bestBunBrain.clone();
+                        bun.brain.cost = 0;
+                        bun.energy = 100;
+                        if ( Math.random() < 0.75 ){
+                            bun.brain.mutate();
+                        }
+                        bun.attr({ visibility: "visible" });
+                    });
+                    countDeadBun = 0;
+                    bestBrain = null;
+                }
+                else {
+                    buns.forEach( bun => {
+                        if (bun.attr("visibility") !== "hidden") {
+                            bun.energy += 10;
+                        }
+                    });
+                }
+            }
+            let value = 0;
+            let _int = setInterval(() => {
+                value += 1;
+                costText.attr({ text: Math.round(value), fill: 'yellow', "font-size": "40px" });
+                buns.forEach( bun => {
+                    if (bun.attr("visibility") === "hidden")
+                        return;
+                    const bunBox = bun.getBBox();
+                    if ( intersection(bunBox,currentPiece) ){
+                        dead(bun);
+                        return;
+                    }
+                    if (bun.inAnim().length === 0) {
+                        const distance = currentPiece.x - bunBox.x;
+                        if ( distance >= 0 ){
+                            const inputs = [[ map( distance, 0, 1920, 0, 1)]];
+                            const result =  bun.brain.feedForward(inputs[0]);
+                            if ( result[1] > result[0] ){
+                                bunJump(bun);
+                                bun.energy -= 10;
+                            }
+                        }
+                    }
+                });
+            }, 100)
+            //document.addEventListener('keydown', mouseDownBun);
         }
         function animateAll() {
             // animatetTruck1();
@@ -330,44 +367,7 @@ class NeuroBun extends BaseElement {
             return (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
         }
 
-        async function newPopulation() {
-            // let count = 0;
-            // let bestBrain = null;
-            if ( clouds.attr("fill") !== "white" ){
-                clouds.attr({ fill: "white" });
-            }
-            buns.forEach( bun => {
-                if (bun.attr("visibility") === "hidden")
-                    return;
-                bun.hasFish = false;
-                bun.energy -= kindFish ? 40 : 0;
-                if (bun.energy <= 0)
-                    dead(bun);
-            });
 
-            if ( countDeadBun === settings.populationCount ){
-                currentPopulation++;
-                value = 0;
-                costText.attr( {text: '0'} );
-                if ( bestBrain?.cost > bestBunBrain.cost ){
-                    bestCostText.attr({text: bestBrain?.cost});
-                }
-                populationText.attr( { text: `${currentPopulation}:${settings.populationCount}`});
-                await changeBestBunBrain( bestBrain );
-                buns.forEach( bun => {
-                    bun.brain = bestBunBrain.clone();
-                    bun.brain.cost = 0;
-                    bun.energy = 100;
-
-                    if ( Math.random() < 0.75 ){
-                        bun.brain.mutate();
-                    }
-                    bun.attr({ visibility: "visible" });
-                });
-                countDeadBun = 0;
-                bestBrain = null;
-            }
-        }
         // function animatetTruck1() { truck.animate({ transform: 't120,10' }, 6000, mina.easeinout, animatetTruck2) }
         // function animatetTruck2() { truck.animate({ transform: 't-10,0' }, 6000, mina.easeinout, animatetTruck1) }
         // function animateCactus() { cactus.animate({ transform: 't1300' }, 4000, mina.linear, animateCactus2) }
@@ -396,8 +396,19 @@ class NeuroBun extends BaseElement {
         function animateMountainRange2() { mountainRange.transform('t0'); animateMountainRange() }
         // function animateClouds() { clouds.animate({ transform: 't1200' }, 30000, '', animateClouds2) }
         // function animateClouds2() { clouds.transform('t0'); animateClouds() }
-        function animateBun() { bun.animate({ transform: 't144,130' }, 800, mina.backout, animateBun2) }
-        function animateBun2() { bun.animate({ transform: 't144,750' }, 400, mina.bounce) }
+        function animateBun() {
+            if (isJump) {
+                return
+            }
+            isJump = true;
+            bun.animate({ transform: 't144,130' }, 800, mina.backout, animateBun2)
+        }
+        function animateBun2() {
+            bun.animate({ transform: 't144,750' }, 400, mina.bounce, animateBun3)
+        }
+        function animateBun3() {
+            isJump = false;
+        }
         // function hoverOverTruck() { document.body.style.cursor = "pointer" }
         // function hoverOutTruck() { document.body.style.cursor = "default" }
         function mouseDownBun() { animateBun() }

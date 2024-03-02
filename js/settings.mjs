@@ -11,7 +11,7 @@ export const defaultSettings = {
         number: 1,
         name: "Прыжок за рыбой"
     },
-    topology: [2,2,2],
+    topology: [1,2],
     populationCount: 10,
     crazyFish: {
         distance: {
@@ -45,7 +45,7 @@ export function destroySettings() {
 export async function loadSettings() {
     settings = JSON.parse(JSON.stringify(defaultSettings));
     settings._id = getSettingsID();
-    await get()
+    // await get()
 }
 
 export async function get() {

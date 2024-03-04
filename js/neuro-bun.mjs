@@ -34,7 +34,8 @@ class NeuroBun extends BaseElement {
                 position: relative;
                 display: block;
             }
-            
+
+
             canvas {
                 position: absolute;
                 display: block;
@@ -166,7 +167,7 @@ class NeuroBun extends BaseElement {
                     if (countDeadBun === settings.populationCount) {
                         forest.audio.play();
                     }
-                    else if (currentPiece.x < 144 && !isSay && countDeadBun !== settings.populationCount) {
+                    else if (currentPiece.x < 144 - currentPiece.w && !isSay && countDeadBun !== settings.populationCount) {
                         currentPiece.audio.play();
                         isSay = true;
                     }

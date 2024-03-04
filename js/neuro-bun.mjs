@@ -111,6 +111,8 @@ class NeuroBun extends BaseElement {
 		// .then(svg => {
 		// 	data.svg = svg;
 		// });
+        console.log(window.location)
+        console.log(import.meta.url)
         const s = Snap(this.shadowRoot.getElementById('crazyBun'));
         let bun;
         let costText;
@@ -140,15 +142,15 @@ class NeuroBun extends BaseElement {
             const canvas = this.shadowRoot.getElementById('forest');
             const ctx = canvas.getContext('2d');
 
-            const forest = {image: data.select("#forestGroup").node, x:0, y:0, h: 400, w: 200, audio: new Audio('/audio/bun.mp3')};
+            const forest = {image: data.select("#forestGroup").node, x:0, y:0, h: 400, w: 200, audio: new Audio('../audio/bun.mp3')};
 
             const heros = [6];
-            heros[0] = {image: data.select("#grandpaGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('/audio/grandpa.mp3')};
-            heros[1] = {image: data.select("#grandmaGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('/audio/grandma.mp3')};
-            heros[2] = {image: data.select("#hareGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('/audio/hare.mp3')};
-            heros[3] = {image: data.select("#bearGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('/audio/bear.mp3')};
-            heros[4] = {image: data.select("#wolfGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('/audio/wolf.mp3')};
-            heros[5] = {image: data.select("#foxGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('/audio/fox.mp3')};
+            heros[0] = {image: data.select("#grandpaGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('../audio/grandpa.mp3')};
+            heros[1] = {image: data.select("#grandmaGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('../audio/grandma.mp3')};
+            heros[2] = {image: data.select("#hareGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('../audio/hare.mp3')};
+            heros[3] = {image: data.select("#bearGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('../audio/bear.mp3')};
+            heros[4] = {image: data.select("#wolfGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('../audio/wolf.mp3')};
+            heros[5] = {image: data.select("#foxGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('../audio/fox.mp3')};
             heros.forEach( hero =>
                 hero.audio.volume = 0.2
             )

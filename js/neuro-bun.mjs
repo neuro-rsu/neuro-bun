@@ -111,33 +111,19 @@ class NeuroBun extends BaseElement {
 		// .then(svg => {
 		// 	data.svg = svg;
 		// });
-        const s = Snap(this.shadowRoot.getElementById('crazyBun')),
-            vbW = 1920,
-            vbH = 1080;
-
-//        road2.attr({ fill: "grey" });
-        //sun.attr({ fill: "khaki", stroke: "goldenrod", strokeWidth: 40 });
-        // const night = s.rect(-4, -600, vbW + 10, 600);
-        // const moon = s.circle(980, 800, 60);
-        // moon.attr({ fill: "white" });
-        let forest, bun, fox, bear, wolf, hare, grandma;
+        const s = Snap(this.shadowRoot.getElementById('crazyBun'));
+        let bun;
         let costText;
         let populationText;
         let bestCostText;
+
         let currentPopulation = 0;
-        //populationText.attr({ fill: 'yellow', "font-size": "40px" });
-        //costText.attr({ fill: 'yellow', "font-size": "40px" });
-        //const mystring = data.svg;
-        //const blob = new Blob([mystring], { type: 'text/plain' });
-        //const objectURL = URL.createObjectURL(blob);
-        //Snap.load(objectURL, onSVGLoaded);
+
         const buns = Array(settings.populationCount);
         Snap.load("images/crazy-bun4.svg", onSVGLoaded.bind(this));
         let countDeadBun = 0;
         let bestBrain = null;
         let isJump = false;
-
-
 
         function dead(bun) {
             bun.brain.cost = +costText.attr( "text" );
@@ -150,106 +136,77 @@ class NeuroBun extends BaseElement {
         }
 
         function onSVGLoaded(data) {
-            // mountains = data.select("#mGroup");
-            // mountainRange = data.select("#mrGroup");
-            bun = data.select("#bunGroup");
-            fox = data.select("#foxGroup");
-            bear = data.select("#bearGroup");
-            wolf = data.select("#wolfGroup");
-            grandma = data.select("#grandmaGroup");
-            hare = data.select("#hareGroup");
-            forest = data.select("#forestGroup");
-
+            let isSay = false;
             const canvas = this.shadowRoot.getElementById('forest');
             const ctx = canvas.getContext('2d');
-            // const forestImage = new Image();
-            // forestImage.src = 'images/png/forest.avif';
-            const forestImage = forest.node;
-            const foxImage = fox.node;
-            const bearImage = bear.node;
-            const wolfImage = wolf.node;
-            const grandmaImage = grandma.node;
-            const hareImage = hare.node;
-            const piece = {image: forestImage, x:0, y:0, h: 400, w: 200};
-            const foxPiece = {image: foxImage, x:1920, y:500, h: 400, w: 200};
-            const bearPiece = {image: bearImage, x:1920, y:500, h: 400, w: 200};
-            const wolfPiece = {image: wolfImage, x:1920, y:500, h: 400, w: 200};
-            const grandmaPiece = {image: grandmaImage, x:1920, y:500, h: 400, w: 200};
-            const harePiece = {image: hareImage, x:1920, y:500, h: 400, w: 200};
+
+            const forest = {image: data.select("#forestGroup").node, x:0, y:0, h: 400, w: 200, audio: new Audio('/audio/bun.mp3')};
+
+            const heros = [6];
+            heros[0] = {image: data.select("#grandpaGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('/audio/grandpa.mp3')};
+            heros[1] = {image: data.select("#grandmaGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('/audio/grandma.mp3')};
+            heros[2] = {image: data.select("#hareGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('/audio/hare.mp3')};
+            heros[3] = {image: data.select("#bearGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('/audio/bear.mp3')};
+            heros[4] = {image: data.select("#wolfGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('/audio/wolf.mp3')};
+            heros[5] = {image: data.select("#foxGroup").node, x:1920, y:500, h: 400, w: 200, audio: new Audio('/audio/fox.mp3')};
+            heros.forEach( hero =>
+                hero.audio.volume = 0.2
+            )
+
+            let currentPiece;
+
+            bun = data.select("#bunGroup");
+
             function randomInteger(min, max) {
                 let rand = min + Math.random() * (max + 1 - min);
                 return Math.floor(rand);
             }
-            let currentPiece;
+
             function selectAnimal() {
-                switch(randomInteger(0,4)) {
-                    case 0:
-                        currentPiece = harePiece
-                        break;
-                    case 1:
-                        currentPiece = wolfPiece
-                        break;
-                    case 2:
-                        currentPiece = bearPiece
-                        break;
-                    case 3:
-                        currentPiece = foxPiece
-                        break;
-                    case 4:
-                        currentPiece = grandmaPiece
-                        break;
-                }
+                const heroIndex = randomInteger(0, heros.length - 2)
+                currentPiece = heros[heroIndex];
+                [heros[heroIndex], heros[heros.length - 1]] = [heros[heros.length - 1], heros[heroIndex]];
             }
+
             selectAnimal()
 
-            forestImage.onload = () => window.requestAnimationFrame(gameLoop);
+            forest.image.onload = () => window.requestAnimationFrame(gameLoop);
 
-            function gameLoop(){
-                 // Clear canvas
+            function gameLoop() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-                ctx.drawImage(piece.image, piece.x, piece.y, 3840, 1080)
-                // Brick stops when it gets to the middle of the canvas
-                if (piece.x > -1533) {
-                    piece.x -= 2;
-                }
-                else {
-                    piece.x = 0;
-                }
+                ctx.drawImage(forest.image, forest.x, forest.y, 3840, 1080)
+
+                forest.x = forest.x > -1533 ? forest.x - 2 : 0;
 
                 ctx.drawImage(currentPiece.image, currentPiece.x, currentPiece.y, 200, 400)
 
                 if (currentPiece.x > -200) {
                     currentPiece.x -= 20;
+                    if (countDeadBun === settings.populationCount) {
+                        forest.audio.play();
+                    }
+                    else if (currentPiece.x < 144 && !isSay && countDeadBun !== settings.populationCount) {
+                        currentPiece.audio.play();
+                        isSay = true;
+                    }
                 } else {
                     currentPiece.x = 1920;
+                    isSay = false;
                     newPopulation()
                     selectAnimal()
                 }
 
                 window.requestAnimationFrame(gameLoop)
             }
-            // const canvas = this.shadowRoot.getElementById('forest');
-            // const ctx = canvas.getContext('2d');
-            // const forestImage = new Image();
-            // forestImage.src = '/images/png/forest.avif';
-            // const piece = {image: forestImage, x:0, y:0, width:100};
-            // ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-            // // Draw at coordinates x and y
-            // ctx.drawImage(piece.image, piece.x, piece.y, 2556, 900)
 
             costText = s.text(50, 80, '0');
             populationText = s.text(960, 80, `0:${settings.populationCount}`);
             bestCostText = s.text(1840, 80, '0');
-            populationText.attr({ fill: 'yellow', "font-size": "40px" });
-            costText.attr({ fill: 'yellow', "font-size": "40px" });
-            bestCostText.attr({ fill: 'yellow', "font-size": "40px" });
-            // s.append(forest);
-            // s.append(mountains);
-            // s.append(mountainRange);
-            // s.append(fox);
-            // s.append(bun);
+            populationText.attr({ fill: 'green', "font-size": "40px" });
+            costText.attr({ fill: 'green', "font-size": "40px" });
+            bestCostText.attr({ fill: 'green', "font-size": "40px" });
+
             for (let index = 0; index < buns.length; index++) {
                 buns[index] = bun.clone();
                 buns[index].brain = bestBunBrain.clone();
@@ -259,37 +216,12 @@ class NeuroBun extends BaseElement {
                 buns[index].transform('t144,750');
             }
 
-
-            //let t = new Snap.Matrix();
-            //t.translate(-1200, 0);
-
-            //bun.transform('t100,136');
-            //cactus.transform(t);
-            // forest.transform('t-1278');
-            fox.transform('t400,160');
-            // bun.transform('t144,750');
-			// fish.transform('t-600,100');
-
-
-            // sun.hover(hoverOverSun, hoverOutSun);
-            // sun.mousedown(mouseDownSun);
-            // moon.hover(hoverOverMoon, hoverOutMoon);
-            // moon.mousedown(mouseDownMoon);
-            animateAll();
-            //text2.attr({ fill: 'yellow', "font-size": "40px" })
-
-            function intersection(a, b) {{
-                const left = Math.max(a.x, b.x);
-                const top = Math.max(a.y, b.y);
-                const right = Math.min(a.x + a.w, b.x + b.w);
-                const bottom = Math.min(a.y + a.h, b.y+ b.h);
-                const width = right - left;
-                const height = bottom - top;
-                if (width < 0 || height < 0)
-                    return false;
-                return true;
-}
+            function intersection(a, b) {
+                const width = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x);
+                const height = Math.min(a.y + a.h, b.y+ b.h) -  Math.max(a.y, b.y);
+                return width >= 0 && height >= 0;
             }
+
             async function newPopulation() {
                 if ( countDeadBun === settings.populationCount ){
                     currentPopulation++;
@@ -323,7 +255,7 @@ class NeuroBun extends BaseElement {
             let value = 0;
             let _int = setInterval(() => {
                 value += 1;
-                costText.attr({ text: Math.round(value), fill: 'yellow', "font-size": "40px" });
+                costText.attr({ text: Math.round(value), fill: 'green', "font-size": "40px" });
                 buns.forEach( bun => {
                     if (bun.attr("visibility") === "hidden")
                         return;
@@ -347,17 +279,7 @@ class NeuroBun extends BaseElement {
             }, 100)
             //document.addEventListener('keydown', mouseDownBun);
         }
-        function animateAll() {
-            // animatetTruck1();
-            // animateCactus();
-            // animateFish();
-            // animateMountains();
-            // animateMountainRange();
-            // animateForest();
-            // animateFox();
-            // animateBun();
-            // animateClouds();
-        }
+
         // Генерация случайного число в диапазоне от min до max включительно
         function randomInteger( min, max ) {
             return Math.floor( min + Math.random() * (max + 1 - min) );
@@ -367,35 +289,6 @@ class NeuroBun extends BaseElement {
             return (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
         }
 
-
-        // function animatetTruck1() { truck.animate({ transform: 't120,10' }, 6000, mina.easeinout, animatetTruck2) }
-        // function animatetTruck2() { truck.animate({ transform: 't-10,0' }, 6000, mina.easeinout, animatetTruck1) }
-        // function animateCactus() { cactus.animate({ transform: 't1300' }, 4000, mina.linear, animateCactus2) }
-        // function animateCactus2() { cactus.transform('t-1200'); cactus.animate({ transform: 't1300' }, 4000, mina.linear, animateCactus) }
-        // function animateFish() { fish.animate({ transform: 't1400' }, 5000, mina.linear, animateFish2) }
-        // // function animateFish2() { fish.transform('t-500 s0.3'); fish.animate({ transform: 't500'}, 3000, mina.linear, animateFish) }
-        // async function animateFish2() {
-        //     await newPopulation();
-        //     fish.transform('t-600,100');
-        //     madFish.transform('t-600,150');
-        //     kindFish = kindFish ? 0 : 1; //randomInteger(0,1);
-        //     if (kindFish === 1) {
-        //         fish.animate({ transform: 't1400,100' }, 5000, mina.linear, animateFish2);
-        //     }
-        //     else {
-        //         madFish.animate({ transform: 't1400,150'}, 5000, mina.linear, animateFish2);
-        //     }
-        // }
-        function animateMountains() { mountains.animate({ transform: 't1200' }, 8000, '', animateMountains2) }
-        function animateMountains2() { mountains.transform('t-1278'); animateMountains() }
-        function animateForest() { forest.animate({ transform: 't0' }, 10000, '', animateForest2) }
-        function animateForest2() { forest.transform('t-1278'); animateForest() }
-        function animateFox() { fox.animate({ transform: 't-1900,160' }, 5000, mina.linear, animateFox2) }
-        function animateFox2() {fox.transform('t800,160'); animateFox()}
-        function animateMountainRange() { mountainRange.animate({ transform: 't1200' }, 4000, '', animateMountainRange2) }
-        function animateMountainRange2() { mountainRange.transform('t0'); animateMountainRange() }
-        // function animateClouds() { clouds.animate({ transform: 't1200' }, 30000, '', animateClouds2) }
-        // function animateClouds2() { clouds.transform('t0'); animateClouds() }
         function animateBun() {
             if (isJump) {
                 return
@@ -409,27 +302,9 @@ class NeuroBun extends BaseElement {
         function animateBun3() {
             isJump = false;
         }
-        // function hoverOverTruck() { document.body.style.cursor = "pointer" }
-        // function hoverOutTruck() { document.body.style.cursor = "default" }
+
         function mouseDownBun() { animateBun() }
-        function hoverOverSun() { document.body.style.cursor = "pointer" }
-        function hoverOutSun() { document.body.style.cursor = "default" }
-        // function lightsOn() { lights.attr({ visibility: "visible" }) }
-        // function hoverOverMoon() { document.body.style.cursor = "pointer" }
-        // function hoverOutMoon() { document.body.style.cursor = "default" }
-        function mouseDownSun() {
-            sun.animate({ transform: 't0,300' }, 1000, mina.bounce);
-            night.animate({ transform: 't0,560' }, 1000, mina.bounce);
-            moon.animate({ transform: 't0,-730' }, 1000, mina.bounce, lightsOn);
-            clouds.attr({ "fill-opacity": 0.3 });
-        }
-        // function mouseDownMoon() {
-        //     sun.animate({ transform: 't60' }, 3000, mina.linear);
-        //     night.animate({ transform: 't0,-560' }, 1000, mina.bounce);
-        //     moon.animate({ transform: 't0,730' }, 1000, mina.bounce);
-        //     clouds.attr({ "fill-opacity": 1 });
-        //     lights.attr({ visibility: "hidden" });
-        // }
+
         function bunJump( bun ){
             bun.animate( { transform: 't144,200' }, 800, mina.backout, () => {
                 bun.animate( { transform: 't144,750' }, 400, mina.bounce, () => {

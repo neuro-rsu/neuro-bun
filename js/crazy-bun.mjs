@@ -260,52 +260,7 @@ class CrazyBun extends LitElement {
 
             // document.addEventListener('keydown', mouseDownTruck);
         }
-        function animateAll() {
-            animatetTruck1();
-            animateCactus();
-            animateFish();
-            animateMountains();
-            animateMountainRange();
-            animateClouds();
-        }
 
-
-
-        function animatetTruck1() { truck.animate({ transform: 't120,10' }, 6000, mina.easeinout, animatetTruck2) }
-        function animatetTruck2() { truck.animate({ transform: 't-10,0' }, 6000, mina.easeinout, animatetTruck1) }
-        function animateCactus() { cactus.animate({ transform: 't1300' }, 4000, mina.linear, animateCactus2) }
-        function animateCactus2() { cactus.transform('t-1200'); cactus.animate({ transform: 't1300' }, 4000, mina.linear, animateCactus) }
-        function animateFish() { fish.animate({ transform: 't1400' }, 5000, mina.linear, animateFish2) }
-        function animateFish2() { fish.transform('t-600'); fish.animate({ transform: 't1400'}, 5000, mina.linear, animateFish2); if (!isFish) { missedFish++; pointsText.attr( { text: `${caughtFish}:${missedFish}` }) }; isFish = false;}
-        function animateMountains() { mountains.animate({ transform: 't1200' }, 8000, '', animateMountains2) }
-        function animateMountains2() { mountains.transform('t0'); animateMountains() }
-        function animateMountainRange() { mountainRange.animate({ transform: 't1200' }, 4000, '', animateMountainRange2) }
-        function animateMountainRange2() { mountainRange.transform('t0'); animateMountainRange() }
-        function animateClouds() { clouds.animate({ transform: 't1200' }, 30000, '', animateClouds2) }
-        function animateClouds2() { clouds.transform('t0'); animateClouds() }
-        function animateCoon() { raccoon.animate({ transform: 't100,-270' }, 800, mina.backout, animateCoon2) }
-        function animateCoon2() { raccoon.animate({ transform: 't100,136' }, 400, mina.bounce);  }
-        function hoverOverTruck() { document.body.style.cursor = "pointer" }
-        function hoverOutTruck() { document.body.style.cursor = "default" }
-        function mouseDownTruck() { animateCoon() }
-        function hoverOverSun() { document.body.style.cursor = "pointer" }
-        function hoverOutSun() { document.body.style.cursor = "default" }
-        function lightsOn() { lights.attr({ visibility: "visible" }) }
-        function hoverOverMoon() { document.body.style.cursor = "pointer" }
-        function hoverOutMoon() { document.body.style.cursor = "default" }
-        function mouseDownSun() {
-            sun.animate({ transform: 't0,300' }, 1000, mina.bounce);
-            night.animate({ transform: 't0,560' }, 1000, mina.bounce);
-            moon.animate({ transform: 't0,-730' }, 1000, mina.bounce, lightsOn);
-            clouds.attr({ "fill-opacity": 0.3 });
-        }
-        function mouseDownMoon() {
-            sun.animate({ transform: 't60' }, 3000, mina.linear);
-            night.animate({ transform: 't0,-560' }, 1000, mina.bounce);
-            moon.animate({ transform: 't0,730' }, 1000, mina.bounce);
-            clouds.attr({ "fill-opacity": 1 });
-            lights.attr({ visibility: "hidden" });
-        }
         function raccoonJump( raccoon ){
             raccoon.animate( { transform: 't100,-270' }, 800, mina.backout, () => {
                 raccoon.animate( { transform: 't100,140' }, 400, mina.bounce, () => {

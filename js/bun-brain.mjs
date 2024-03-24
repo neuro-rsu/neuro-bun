@@ -28,11 +28,10 @@ export async function clearBestBunBrain() {
     bestBunBrain = new NeuralNetwork(settings.topology);
     bestBunBrain.cost = -Infinity;
 
-    await pdb.get(settings.topology.join('-')).then(function (bestBunBrainDB) {
+    await pdb.get(settings.topology.join('-')).then(bestBunBrainDB => {
         bestBunBrain._id = bestBunBrainDB._id;
         bestBunBrain._rev = bestBunBrainDB._rev;
         return pdb.put(bestBunBrain);
-        // console.log(bestBunBrainDB);
     }).catch( err => {
         console.log(`Can't clear bestBunBrain ${err}`);
     });
@@ -54,7 +53,6 @@ export async function addBestBunBrain() {
         console.log(`Can't add bestBunBrain ${err}`);
     });
 }
-// bestBunBrain.cost = -Infinity;
 
 export async function changeBestBunBrain(bunBrain) {
     if (bunBrain.cost > bestBunBrain.cost) {

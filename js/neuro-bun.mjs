@@ -167,7 +167,7 @@ class NeuroBun extends BaseElement {
                 ctx.drawImage(currentPiece.image, currentPiece.x, currentPiece.y, 200, 400)
 
                 if (currentPiece.x > -200) {
-                    currentPiece.x -= 20;
+                    currentPiece.x -= 12;
                     if (countDeadBun === settings.populationCount) {
                         forest.audio.play();
                         isSay = true;
